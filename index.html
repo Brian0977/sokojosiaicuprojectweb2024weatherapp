@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Weather Application</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <!-- Font Awesome CSS Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-size: 16px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: #f8f9fa;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqBxEMdeKf2n5yGxzljAY1ACfjzAfULc6Txg&s');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1, h3 {
+            font-weight: bold;
+        }
+
+        .jumbotron {
+            background: linear-gradient(45deg, #007baa, #005f8e);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .forecast {
+            font-size: 0.9em;
+            transition: transform 0.3s;
+        }
+
+        .forecast:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #005f8e;
+            color: white;
+        }
+
+        li:hover {
+            background-color: lightslategray;
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #007baa;
+            color: white;
+        }
+
+        .navbar-links {
+            background-color: #007baa;
+            color: white;
+            padding: 10px 0;
+        }
+
+        .navbar-links a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Links Section -->
+    <div class="navbar-links text-center">
+        <a href="http://www.icuzambia.net" target="_blank" rel="noopener noreferrer">ICU Zambia</a>
+        <a href="https://www.zrdc.org" target="_blank" rel="noopener noreferrer">ZRDC</a>
+    </div>
+
+    <!-- Jumbotron for Title -->
+    <div class="container-fluid py-1 text-center text-white jumbotron">
+        <h1 class="display-4 fw-bold">Luapula Province Weather App</h1>
+    </div> 
+    <div class="container mt-4">
+        <!-- Row for searching a city -->
+        <div class="row g-4">
+            <!-- Sidebar for search and history -->
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3"><strong>Search for a City</strong></h4>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="search-city" placeholder="Enter city name">
+                            <button class="btn btn-primary" id="search-button"><i class="fa-solid fa-search"></i></button>
+                        </div>
+                        <button class="btn btn-danger w-100" id="clear-history">Clear History</button>
+                        <ul class="list-group mt-3" id="history-list">
+                            <!-- Dynamic search history will populate here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main weather content -->
+            <div class="col-md-8">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <h3 class="city-name fw-bold" id="current-city"></h3>
+                        <hr>
+                        <p class="mb-2">Temperature: <span class="fw-bold" id="temperature"></span></p>
+                        <p class="mb-2">Humidity: <span class="fw-bold" id="humidity"></span></p>
+                        <p class="mb-2">Wind Speed: <span class="fw-bold" id="wind-speed"></span></p>
+                        <p>UV Index: <span class="fw-bold text-white px-2 py-1 rounded" id="uv-index"></span></p>
+                    </div>
+                </div>
+
+                <!-- 5-Day Forecast -->
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title">5-Day Forecast</h3>
+                        <div class="row g-3 mt-3" id="future-weather">
+                            <div class="col text-center bg-primary text-white p-3 rounded forecast" id="day0">
+                                <p id="fDate0" class="mb-1"></p>
+                                <i id="fImg0" class="fa-solid fa-cloud-sun"></i>
+                                <p class="mb-1">Temp: <span id="fTemp0"></span></p>
+                                <p>Humidity: <span id="fHumidity0"></span></p>
+                            </div>
+                            <div class="col text-center bg-primary text-white p-3 rounded forecast" id="day1">
+                                <p id="fDate1" class="mb-1"></p>
+                                <i id="fImg1" class="fa-solid fa-cloud-sun"></i>
+                                <p class="mb-1">Temp: <span id="fTemp1"></span></p>
+                                <p>Humidity: <span id="fHumidity1"></span></p>
+                            </div>
+                            <div class="col text-center bg-primary text-white p-3 rounded forecast" id="day2">
+                                <p id="fDate2" class="mb-1"></p>
+                                <i id="fImg2" class="fa-solid fa-cloud-sun"></i>
+                                <p class="mb-1">Temp: <span id="fTemp2"></span></p>
+                                <p>Humidity: <span id="fHumidity2"></span></p>
+                            </div>
+                            <div class="col text-center bg-primary text-white p-3 rounded forecast" id="day3">
+                                <p id="fDate3" class="mb-1"></p>
+                                <i id="fImg3" class="fa-solid fa-cloud-sun"></i>
+                                <p class="mb-1">Temp: <span id="fTemp3"></span></p>
+                                <p>Humidity: <span id="fHumidity3"></span></p>
+                            </div>
+                            <div class="col text-center bg-primary text-white p-3 rounded forecast" id="day4">
+                                <p id="fDate4" class="mb-1"></p>
+                                <i id="fImg4" class="fa-solid fa-cloud-sun"></i>
+                                <p class="mb-1">Temp: <span id="fTemp4"></span></p>
+                                <p>Humidity: <span id="fHumidity4"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-4">
+        <span class="copyright">All Rights Reserved. Designed and Maintained By Soko Josiah, SIN: 2401253109</span>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script> <!-- Link your script.js here -->
+</body>
+</html>
